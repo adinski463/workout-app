@@ -1,0 +1,25 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+*.iml
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/debug/
+android/app/profile/
+android/app/release/
+key.properties
+*.jks
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Local secrets — never commit Supabase keys
+lib/config/env.local.dart
+.env
