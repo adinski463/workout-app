@@ -13,8 +13,8 @@ Google Play tester requirement) affect the schedule badly if discovered late.
 - **The core thesis.** Sub-muscle targeting + coverage map + one-tap import is a real
   gap in the market. Most workout apps are either loggers (Strong, Hevy) or content
   feeds — few let you *import someone else's structured workout and then log it*.
-- **React Native + Expo + Supabase.** Correct default for a solo zero-budget mobile app.
-  Boring and well-documented, which is what you want when you're learning.
+- **Flutter + Supabase.** (Plan says React Native + Expo; the decision is Flutter — see
+  "Stack: Flutter" below.) Either works; Flutter is arguably the better fit here.
 - **Android first, iOS later.** Right call. $99/year for an app with no users is waste.
 - **Pre-seeding 50–100 workouts.** This is the single most important non-code task in
   the plan, and most first-time founders skip it. Keep it.
@@ -185,15 +185,77 @@ matters, because a coverage map is the thing people will share.
 
 ---
 
+---
+
+## Stack: Flutter (decided — replaces React Native + Expo in the original plan)
+
+Flutter is a good choice for this app, and for two of the signature features it's the
+better one. Nothing in Changes 1–6 above depends on the framework — the schema, the build
+order, the Play Store timeline and the compliance work are all identical either way.
+
+### Where Flutter is actively better for *this* app
+
+- **The muscle coverage map.** This is your headline feature and it's a custom-drawn,
+  volume-shaded body diagram. Flutter's `CustomPaint`/`Canvas` (plus `flutter_svg` for the
+  body outline) is a first-class drawing surface — you get precise control over per-region
+  fills and hit-testing without fighting the platform. In React Native the equivalent runs
+  through a bridge-backed SVG library and is fiddlier.
+- **Offline logging.** Change 5 requires logging that survives dead gym wifi. Flutter's
+  local-database story (**Drift**, or `sqflite` if you want it simpler) is mature and
+  type-safe, which makes "write locally first, sync to Supabase in the background" a
+  well-trodden pattern rather than an improvisation.
+- **One coherent toolchain.** For a first-time solo developer this matters more than
+  people admit: one official SDK, one widget library, one `flutter doctor` telling you
+  what's wrong. The RN ecosystem is more fragmented and more prone to version-mismatch
+  rabbit holes that eat entire evenings.
+- **Dart is easy to pick up** — if you know any C-family or JS-like language you'll be
+  productive within days, and it's statically typed, which catches a whole class of bug
+  before it reaches your phone.
+
+### What you give up
+
+- **iOS needs a Mac — or CI.** Expo's cloud builds let you ship iOS from a Windows/Linux
+  machine. With Flutter you either need macOS, or a CI service: **Codemagic's free tier
+  includes ~500 macOS build minutes/month**, which is plenty for a solo project. Note the
+  caveat — CI can *build and ship* iOS, but debugging on an iOS simulator or device still
+  needs a Mac. Since the plan is Android-first this is deferred, not blocking. Just don't
+  promise anyone an iOS build before you've solved it.
+- **Slightly larger APK** (a few MB of engine). Irrelevant for this app.
+- **Marginally smaller pool of copy-pasteable answers** than RN for niche problems.
+  In practice both are extremely well covered.
+
+### Concrete package choices
+
+| Need | Package | Note |
+|------|---------|------|
+| Backend / auth / DB | `supabase_flutter` | Official, actively maintained, v2+ |
+| State management | `riverpod` | Compile-safe, good async handling; `provider` if you want the gentlest curve |
+| Local DB (offline logs) | `drift` | Type-safe SQLite; `sqflite` is the simpler fallback |
+| Body diagram | `flutter_svg` + `CustomPaint` | Coverage map |
+| Navigation | `go_router` | Deep links matter later for sharing workouts |
+| HTTP (catalog sync) | `dio` or `http` | Only needed for the sync job |
+| Errors / analytics | `sentry_flutter`, `posthog_flutter` | Add before the test phase |
+| iOS builds later | Codemagic free tier | Or GitHub Actions with a macOS runner |
+
+### Two Flutter-specific things to get right early
+
+1. **Deep links from day one-ish.** "Share this workout" is the growth mechanism for a
+   community app. Set up `go_router` with a URL scheme early so a shared link opens the
+   workout in-app rather than nowhere. Retrofitting routing is annoying.
+2. **Keep Supabase calls out of your widgets.** Put them behind a repository class that
+   your Riverpod providers call. That's what makes the offline-first layer in Change 5
+   droppable in later without rewriting every screen.
+
+---
+
 ## Smaller notes
 
 - **"Smart swap ranked by popularity in liked workouts" needs data you won't have.**
   At launch there are no likes to rank by. Ship the library-based swap (same primary
   muscle, sorted by how well-documented the exercise is) and let popularity ranking
   switch on later once there's traffic. Don't build the ranking infrastructure in Phase 3.
-- **Distribute test builds as an APK, not via Expo Go.** Asking non-technical gym friends
-  to install Expo Go and open a project link loses half of them. An EAS-built APK link,
-  or Play closed testing, is a much shorter path. Expo Go is great for *you*, during dev.
+- **Distribute test builds as an APK or via Play closed testing.** With Flutter this is
+  the default path anyway — there is no Expo Go equivalent to get wrong.
 - **Supabase free tier pauses a project after 7 days with no API requests**, caps at
   500 MB database and 2 active projects. Fine for this app's data volume — workouts and
   set logs are tiny — but once real testers are on it, know that an idle week takes you
@@ -211,7 +273,7 @@ matters, because a coverage map is the thing people will share.
     rejects UGC apps without safeguards. A "report workout" button and a flag column is
     enough to start.
   - Also add a plain health disclaimer. You're distributing exercise instructions.
-- **Timeline.** 14 weeks assumes no learning curve. For a first React Native project built
+- **Timeline.** 14 weeks assumes no learning curve. For a first Flutter project built
   in evenings, roughly double is normal. This isn't a reason to change the plan — just
   track **milestones, not weeks**, so slipping doesn't feel like failure and cause you to
   cut the parts that matter.
@@ -222,9 +284,11 @@ matters, because a coverage map is the thing people will share.
 
 Same shape, resequenced around the changes above.
 
-### Phase 0 — Setup (unchanged)
-Expo hello-world on your phone, Supabase project, one wger API call rendering a list.
-🎯 wger exercises visible inside your own app.
+### Phase 0 — Setup
+Flutter SDK + Android Studio, `flutter doctor` clean, hello-world running on your own
+phone over USB/wireless debugging. Supabase project created. One exercise-API call
+rendering a `ListView`.
+🎯 Real exercises visible inside your own app, on your own phone.
 
 ### Phase 1 — Foundation
 - Auth (email magic link) + **RLS policies on every table**
