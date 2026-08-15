@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "note": "Hierarchical muscle taxonomy. Parents drive the top-level filter chips; children are the sub-muscle layer the app is built around. body_side decides which half of the body diagram a region is drawn on, and is per-row: rear delts belong to the 'shoulders' group but are drawn on the back.",
+  "muscles": [
+    { "slug": "chest",      "name": "Chest",     "parent": null, "side": "front", "order": 100 },
+    { "slug": "chest-upper", "name": "Upper Chest", "parent": "chest", "side": "front", "order": 101 },
+    { "slug": "chest-mid",   "name": "Mid Chest",   "parent": "chest", "side": "front", "order": 102 },
+    { "slug": "chest-lower", "name": "Lower Chest", "parent": "chest", "side": "front", "order": 103 },
+
+    { "slug": "back",        "name": "Back",        "parent": null,   "side": "back", "order": 200 },
+    { "slug": "lats",        "name": "Lats",        "parent": "back", "side": "back", "order": 201 },
+    { "slug": "traps-upper", "name": "Upper Traps", "parent": "back", "side": "back", "order": 202 },
+    { "slug": "traps-mid",   "name": "Mid Traps",   "parent": "back", "side": "back", "order": 203 },
+    { "slug": "traps-lower", "name": "Lower Traps", "parent": "back", "side": "back", "order": 204 },
+    { "slug": "rhomboids",   "name": "Rhomboids",   "parent": "back", "side": "back", "order": 205 },
+    { "slug": "erectors",    "name": "Spinal Erectors", "parent": "back", "side": "back", "order": 206 },
+
+    { "slug": "shoulders",   "name": "Shoulders",   "parent": null,        "side": "front", "order": 300 },
+    { "slug": "delts-front", "name": "Front Delts", "parent": "shoulders", "side": "front", "order": 301 },
+    { "slug": "delts-side",  "name": "Side Delts",  "parent": "shoulders", "side": "front", "order": 302 },
+    { "slug": "delts-rear",  "name": "Rear Delts",  "parent": "shoulders", "side": "back",  "order": 303 },
+
+    { "slug": "arms",              "name": "Arms",              "parent": null,   "side": "front", "order": 400 },
+    { "slug": "biceps-long",       "name": "Biceps Long Head",  "parent": "arms", "side": "front", "order": 401 },
+    { "slug": "biceps-short",      "name": "Biceps Short Head", "parent": "arms", "side": "front", "order": 402 },
+    { "slug": "brachialis",        "name": "Brachialis",        "parent": "arms", "side": "front", "order": 403 },
+    { "slug": "triceps-long",      "name": "Triceps Long Head", "parent": "arms", "side": "back",  "order": 404 },
+    { "slug": "triceps-lateral",   "name": "Triceps Lateral Head", "parent": "arms", "side": "back", "order": 405 },
+    { "slug": "triceps-medial",    "name": "Triceps Medial Head",  "parent": "arms", "side": "back", "order": 406 },
+    { "slug": "forearm-flexors",   "name": "Forearm Flexors",   "parent": "arms", "side": "front", "order": 407 },
+    { "slug": "forearm-extensors", "name": "Forearm Extensors", "parent": "arms", "side": "back",  "order": 408 },
+
+    { "slug": "legs",           "name": "Legs",              "parent": null,   "side": "front", "order": 500 },
+    { "slug": "quads-rectus",   "name": "Rectus Femoris",    "parent": "legs", "side": "front", "order": 501 },
+    { "slug": "quads-lateral",  "name": "Vastus Lateralis",  "parent": "legs", "side": "front", "order": 502 },
+    { "slug": "quads-medial",   "name": "Vastus Medialis",   "parent": "legs", "side": "front", "order": 503 },
+    { "slug": "hams-lateral",   "name": "Biceps Femoris",    "parent": "legs", "side": "back",  "order": 504 },
+    { "slug": "hams-medial",    "name": "Semitendinosus",    "parent": "legs", "side": "back",  "order": 505 },
+    { "slug": "glute-max",      "name": "Glute Max",         "parent": "legs", "side": "back",  "order": 506 },
+    { "slug": "glute-med",      "name": "Glute Medius",      "parent": "legs", "side": "back",  "order": 507 },
+    { "slug": "adductors",      "name": "Adductors",         "parent": "legs", "side": "front", "order": 508 },
+    { "slug": "calves-gastroc", "name": "Gastrocnemius",     "parent": "legs", "side": "back",  "order": 509 },
+    { "slug": "calves-soleus",  "name": "Soleus",            "parent": "legs", "side": "back",  "order": 510 },
+
+    { "slug": "core",       "name": "Core",           "parent": null,   "side": "front", "order": 600 },
+    { "slug": "abs-upper",  "name": "Upper Abs",      "parent": "core", "side": "front", "order": 601 },
+    { "slug": "abs-lower",  "name": "Lower Abs",      "parent": "core", "side": "front", "order": 602 },
+    { "slug": "obliques",   "name": "Obliques",       "parent": "core", "side": "front", "order": 603 }
+  ]
+}

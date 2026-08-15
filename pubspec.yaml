@@ -1,0 +1,40 @@
+name: workout_app
+description: "Share structured workouts tagged by sub-muscle, import them, and log them."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management. Plain providers, no codegen — keeps the build simple.
+  flutter_riverpod: ^2.6.1
+
+  # Local-first storage. Logging must work with no signal (see docs/01-plan-review.md).
+  sqflite: ^2.4.1
+  path: ^1.9.0
+  path_provider: ^2.1.5
+
+  # Navigation, set up early so shared workout links can deep-link in.
+  go_router: ^14.8.0
+
+  # Backend. The app runs fully without credentials; this powers the social layer.
+  supabase_flutter: ^2.8.3
+
+  uuid: ^4.5.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  # Lets the sqflite layer run under `flutter test` on desktop.
+  sqflite_common_ffi: ^2.3.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/catalog/
